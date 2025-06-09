@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indian City AQI Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('/static/download.jpg'); /* your actual image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-white">
+    <div class="bg-white/10 border border-white/20 rounded-xl p-8 max-w-lg w-full text-center shadow-xl backdrop-blur-sm">
+        <h1 class="text-3xl font-bold mb-6 text-white">Indian City PM2.5 Cluster Predictor</h1>
+
+        <form method="post" class="space-y-4">
+            <input type="text" name="city" placeholder="Enter city name" required value="{{ city if city else '' }}"
+                   class="w-full px-4 py-2 rounded-lg border border-white/30 bg-white/20 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="submit" value="Predict"
+                   class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
+        </form>
+	{% if result %}
+    <div class="mt-4 text-white-400 font-semibold">
+        {{ result }}
+    </div>
+	{% endif %}
+
+        {% if label %}
+        <div class="mt-6 text-lg font-medium">
+            <p class="mt-4 text-sm bg-black/80 text-white p-4 rounded-lg shadow-md">{{ city }} - PM2.5: <span class="font-semibold">{{ pm25 }}</span></p><br/>
+            <span class="
+                px-10 py-2 rounded-full font-semibold text-sm
+                {% if label == 'Good' %} bg-green-500 text-white
+                {% elif label == 'Moderate' %} bg-yellow-400 text-black
+                {% elif label == 'Unhealthy' %} bg-red-600 text-white
+                {% elif label == 'Very Unhealthy' %} bg-purple-700 text-white
+                {% elif label == 'Hazardous' %} bg-gray-900 text-white
+                {% elif label == 'Unhealthy for Sensitive Groups' %} bg-orange-500 text-white
+                {% else %} bg-gray-400 text-white
+                {% endif %}
+            ">
+                {{ label }}
+            </span>
+	{% if guidance %}
+	<p class="mt-4 text-sm bg-black/80 text-white p-4 rounded-lg shadow-md">
+    	<span class="font-semibold">Small Guidance:</span> {{ guidance }}	
+	</p>
+	{% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
